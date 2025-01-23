@@ -1,81 +1,70 @@
 // src/components/CsvUploader.tsx
 import React, { useState } from 'react';
-import { parseAndFilterCsv } from '../utils/csvParser';
+import Papa from 'papaparse';
+import { Vehicle } from '../model/Vehicle';
+import VehicleImageFetcher from './VehicleImageFetcher';
 
 interface CsvUploaderProps {
-  onFileParsed: (vehicles: any[]) => void;
-  onUrlParsed: (vehicles: any[]) => void;
+  setUpdatedVehicles: (vehicles: Vehicle[]) => void; // Prop to set the vehicles in the parent
 }
 
-const CsvUploader: React.FC<CsvUploaderProps> = ({ onFileParsed, onUrlParsed }) => {
-  const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
+  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Handle file input
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    setCsvFile(file);
-  };
+  const handleCsvLoaded = (result: Papa.ParseResult<any>) => {
+    try {
+      const filteredData = result.data.filter((vehicle: any) => vehicle.reliability >= 3);
+      setUpdatedVehicles(filteredData);
+      setVehicles(filteredData);
+    } catch (e) {
+      setError('Error parsing CSV file');
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  // Parse the uploaded CSV
-  const handleFileParse = () => {
-    if (!csvFile) return;
-    setLoading(true);
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        parseAndFilterCsv(event.target.result as string, (vehicles) => {
-          onFileParsed(vehicles); // Return parsed vehicles from file
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLoading(true);
+      Papa.parse(file, {
+        complete: (result) => {
+          handleCsvLoaded(result);
+        },
+        error: (error) => {
+          setError('Error reading CSV file');
           setLoading(false);
-        });
-      }
-    };
-    reader.readAsText(csvFile);  // Read file content as text
+        },
+      });
+    }
   };
 
   const handleURLDownloadAndParse = async () => {
-    console.log(process.env.REACT_APP_PROXY_URL)
-    console.log(process.env.REACT_APP_CSV_URL)
-    const url = process.env.REACT_APP_PROXY_URL + process.env.REACT_APP_CSV_URL;  // Use the CORS proxy URL
     setLoading(true);
+    setError(null);
 
     try {
-      console.log('Fetching CSV from URL:', url);
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.statusText}`);
-      }
-
+      const response = await fetch(process.env.REACT_APP_PROXY_URL + process.env.REACT_APP_CSV_URL);
       const text = await response.text();
-      console.log('Raw CSV file content:', text);
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
 
-      parseAndFilterCsv(text, (vehicles) => {
-        console.log('CSV parsed and filtered successfully:', vehicles);
-        onUrlParsed(vehicles);
-        setLoading(false);
-      });
+      handleCsvLoaded(parsed);
     } catch (error) {
-      console.error('Error downloading or parsing CSV:', error);
+      setError('Error downloading or parsing CSV');
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div>
-      <button onClick={handleURLDownloadAndParse} disabled={loading}>
-        Download and parse from URL
-      </button>
-
-      {loading && <p>Loading...</p>}
-
+      <button onClick={handleURLDownloadAndParse}>Download and Parse from URL</button>
       <p>OR</p>
-
-      <input type="file" accept=".csv" onChange={handleFileChange} disabled={loading} />
-      <button onClick={handleFileParse} disabled={loading}>
-        Upload and Parse CSV
-      </button>
+      <input type="file" accept=".csv" onChange={handleFileUpload} />
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
     </div>
   );
 };

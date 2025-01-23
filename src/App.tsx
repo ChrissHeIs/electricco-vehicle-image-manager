@@ -1,27 +1,27 @@
-// src/App.tsx
-import React, { useState } from 'react';
-import CsvUploader from './components/CsvUploader';
-import VehicleTable from './components/VehicleTable';
+import React, { useState } from "react";
+import CsvUploader from "./components/CsvUploader"; // Handles CSV parsing
+import VehicleImageFetcher from "./components/VehicleImageFetcher"; // Handles image fetching
+import { Vehicle } from "./model/Vehicle"; // Assuming Vehicle type is defined somewhere
+import VehicleTable from "./components/VehicleTable";
 
 const App: React.FC = () => {
-  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [updatedVehicles, setUpdatedVehicles] = useState<Vehicle[]>([]);
 
-  // Update vehicles after parsing from file
-  const handleFileParsed = (newVehicles: any[]) => {
-    setVehicles(newVehicles);
-  };
-
-  // Update vehicles after parsing from URL
-  const handleUrlParsed = (newVehicles: any[]) => {
-    setVehicles(newVehicles);
+  // Automatically trigger image fetching in VehicleImageFetcher after CSV is loaded
+  const handleCsvLoaded = (vehicles: Vehicle[]) => {
+    setUpdatedVehicles(vehicles); // Set the updated list of vehicles
   };
 
   return (
-    <div className="App">
+    <div>
       <h1>Vehicle Image Manager</h1>
 
-      <CsvUploader onFileParsed={handleFileParsed} onUrlParsed={handleUrlParsed} />
-      <VehicleTable vehicles={vehicles} />
+      {/* CSV Upload or URL Parsing */}
+      <CsvUploader setUpdatedVehicles={handleCsvLoaded} />
+
+      {/* Show the list of vehicles in a table and fetch images */}
+      <VehicleTable vehicles={updatedVehicles.slice(0, 3) /* Limit to first 3 vehicles for debuggings*/}/>
+      {/*<VehicleImageFetcher vehicles={updatedVehicles} />*/}
     </div>
   );
 };

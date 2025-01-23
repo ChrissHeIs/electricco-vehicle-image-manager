@@ -1,12 +1,7 @@
 // src/components/VehicleTable.tsx
 import React from 'react';
-
-interface Vehicle {
-  brand: string;
-  model: string;
-  year: string;
-  images: string[];
-}
+import { Vehicle } from '../model/Vehicle';
+import VehicleImageFetcher from './VehicleImageFetcher';
 
 interface VehicleTableProps {
   vehicles: Vehicle[];
@@ -30,13 +25,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
             <td>{vehicle.model}</td>
             <td>{vehicle.year}</td>
             <td>
-              {vehicle.images.length > 0 ? (
-                vehicle.images.map((image, idx) => (
-                  <img key={idx} src={image} alt={`${vehicle.brand} ${vehicle.model}`} />
-                ))
-              ) : (
-                <span>Loading...</span>
-              )}
+              <VehicleImageFetcher vehicle={vehicle}/>
             </td>
           </tr>
         ))}

@@ -4,6 +4,7 @@ declare global {
       interface ProcessEnv {
         REACT_APP_PROXY_URL: string;
         REACT_APP_CSV_URL: string;
+        REACT_APP_CARSXE_KEY: string;
       }
     }
   }
