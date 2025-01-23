@@ -10,6 +10,7 @@ interface VehicleImageFetcherProps {
 const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle }) => {
   const [updatedVehicle, setUpdatedVehicle] = useState<Vehicle>(vehicle);
   const [imageUrls, setImageUrls] = useState<string[] | undefined>();
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); // Track selected image
 
   const fetchImagesForVehicle = async (vehicle: Vehicle) => {
     const apiKey = process.env.REACT_APP_CARSXE_KEY;
@@ -48,6 +49,11 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle 
     }
   };
 
+  // Handle image cell click
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index); // Set the clicked image as selected
+  };
+
   useEffect(() => {
     fetchImagesForVehicle(vehicle);
   }, [vehicle]);
@@ -57,7 +63,7 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle 
       {imageUrls ? (
         <div className="image-grid">
           {imageUrls.map((url, i) => (
-            <div key={i} className="image-item">
+            <div key={i} className={`image-item ${selectedImageIndex === i ? 'image-item-selected' : ''}` } onClick={() => handleImageClick(i)}>
               {url ? (
                 <img
                   src={url}

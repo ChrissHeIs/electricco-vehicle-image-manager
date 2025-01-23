@@ -2,8 +2,8 @@
     width: 100%;
   }
 
-  .vehicle-table tr {
-    border-bottom: 1px solid #000;
+  .vehicle-table tr:not(:last-child) {
+    border-bottom: 1px solid #0d0303;
   }
   
   .vehicle-table th:not(:last-child),

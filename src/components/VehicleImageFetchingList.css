@@ -1,11 +1,11 @@
 /* VehicleImageFetchingList.css */
 .image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));  /* Auto-fit images with minimum size of 100px */
-    gap: 10px;  /* Add space between images */
-    width: 100%;
-    justify-items: center; /* Center images within their grid cells */
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  width: 100%; /* Full width of the image container */
+  justify-items: center; /* Center items inside each grid cell */
+}
   
   .image-item {
     width: 100px; /* Fixed size for each image item */
@@ -15,6 +15,11 @@
     align-items: center;
     background-color: lightgray;
     position: relative;
+  }
+
+  .image-item-selected {
+    border: 3px solid #4c5ad7;  /* Green border for selected image */
+    box-shadow: 0 0 10px rgba(80, 104, 239, 0.5);  /* Optional glow effect */
   }
   
   .vehicle-image {
