@@ -8,10 +8,10 @@ interface VehicleImageFetcherProps {
 }
 
 const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle }) => {
-  const [updatedVehicle, setUpdatedVehicle] = useState<Vehicle>(vehicle);
   const [imageUrls, setImageUrls] = useState<string[] | undefined>();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); // Track selected image
   const [overlayImageUrl, setOverlayImageUrl] = useState<string | null>(null); // Image URL for overlay
+  const [successfulImageIndeces, setSuccessfulImageIndeces] = useState<Set<number>>(new Set())
 
   const fetchImagesForVehicle = async (vehicle: Vehicle) => {
     const apiKey = process.env.REACT_APP_CARSXE_KEY;
@@ -52,7 +52,15 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle 
 
   // Handle image cell click
   const handleImageClick = (index: number) => {
-    setSelectedImageIndex(index); // Set the clicked image as selected
+    if (successfulImageIndeces.has(index)) {
+      setSelectedImageIndex(index); // Set the clicked image as selected
+    };
+  };
+
+  const markSuccessfulImageLoad = (index: number) => {
+    const indices = successfulImageIndeces;
+    indices.add(index);
+    setSuccessfulImageIndeces(indices);
   };
 
   // Show the overlay with the larger image
@@ -81,16 +89,21 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle 
                     src={url}
                     alt={`${vehicle.brand} ${vehicle.model}`}
                     className="vehicle-image"
+                    onLoad={() => markSuccessfulImageLoad(i)}
                   />
-                  <div className='zoom-icon-container' onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering the row click
-                    handleImageZoom(url); // Open the larger image in the overlay
-                  }}>
-                    <img src='https://cdn-icons-png.flaticon.com/128/71/71403.png' width="20" height="20"/>
-                  </div>
                 </div>
               ) : (
                 <div className="image-placeholder">Error</div>
+              )}
+              { successfulImageIndeces.has(i) ? (
+                <div className='zoom-icon-container' onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering the row click
+                  handleImageZoom(url); // Open the larger image in the overlay
+                }}>
+                  <img src='https://cdn-icons-png.flaticon.com/128/71/71403.png' width="20" height="20"/>
+                </div>
+              ) : ( 
+                null 
               )}
             </div>
           ))}
