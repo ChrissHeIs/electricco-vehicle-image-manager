@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "ES5",
+      "lib": ["dom", "es2015"],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,  // This ensures case sensitivity in filenames
+      "module": "esnext",
+      "moduleResolution": "node",
+      "jsx": "react-jsx",
+      "types": ["jest"]
+    },
+    "include": ["src"]
+  }
+  
