@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CsvUploader from "./components/CsvUploader"; // Handles CSV parsing
-import VehicleImageFetcher from "./components/VehicleImageFetcher"; // Handles image fetching
+import VehicleImageFetchingList from "./components/VehicleImageFetchingList"; // Handles image fetching
 import { Vehicle } from "./model/Vehicle"; // Assuming Vehicle type is defined somewhere
 import VehicleTable from "./components/VehicleTable";
 
@@ -21,7 +21,6 @@ const App: React.FC = () => {
 
       {/* Show the list of vehicles in a table and fetch images */}
       <VehicleTable vehicles={updatedVehicles.slice(0, 3) /* Limit to first 3 vehicles for debuggings*/}/>
-      {/*<VehicleImageFetcher vehicles={updatedVehicles} />*/}
     </div>
   );
 };

@@ -6,7 +6,7 @@ interface VehicleImageFetcherProps {
   vehicle: Vehicle;
 }
 
-const VehicleImageFetcher: React.FC<VehicleImageFetcherProps> = ({ vehicle }) => {
+const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle }) => {
   const [updatedVehicle, setUpdatedVehicle] = useState<Vehicle>(vehicle);
   const [imageUrls, setImageUrls] = useState<string[] | undefined>();
 
@@ -91,4 +91,4 @@ const VehicleImageFetcher: React.FC<VehicleImageFetcherProps> = ({ vehicle }) =>
   );
 };
 
-export default VehicleImageFetcher;
+export default VehicleImageFetchingList;

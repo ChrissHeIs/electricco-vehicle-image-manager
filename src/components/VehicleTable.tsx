@@ -1,7 +1,7 @@
 // src/components/VehicleTable.tsx
 import React from 'react';
 import { Vehicle } from '../model/Vehicle';
-import VehicleImageFetcher from './VehicleImageFetcher';
+import VehicleImageFetchingList from './VehicleImageFetchingList';
 
 interface VehicleTableProps {
   vehicles: Vehicle[];
@@ -25,7 +25,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
             <td>{vehicle.model}</td>
             <td>{vehicle.year}</td>
             <td>
-              <VehicleImageFetcher vehicle={vehicle}/>
+              <VehicleImageFetchingList vehicle={vehicle}/>
             </td>
           </tr>
         ))}

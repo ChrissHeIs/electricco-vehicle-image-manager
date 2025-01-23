@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { Vehicle } from '../model/Vehicle';
-import VehicleImageFetcher from './VehicleImageFetcher';
 
 interface CsvUploaderProps {
   setUpdatedVehicles: (vehicles: Vehicle[]) => void; // Prop to set the vehicles in the parent
