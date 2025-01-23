@@ -1,0 +1,56 @@
+/* VehicleImageFetchingList.css */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  width: 100%; /* Full width of the image container */
+  justify-items: center; /* Center items inside each grid cell */
+}
+  
+  .image-item {
+    width: 110px; /* Fixed size for each image item */
+    height: 100px; /* Fixed size for each image item */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    position: relative;
+  }
+
+  .image-item-selected {
+    border: 3px solid #4c5ad7;  /* Green border for selected image */
+    box-shadow: 0 0 10px rgba(80, 104, 239, 0.5);  /* Optional glow effect */
+  }
+  
+  .vehicle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure image scales proportionally within the fixed size */
+  }
+  
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    font-size: 12px;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .zoom-icon-container {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  /* Set your desired fixed size here */
+    width: 20px;  
+    height: 20px;
+    z-index: 10;
+    }
+  

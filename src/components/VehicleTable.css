@@ -1,0 +1,29 @@
+.vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .vehicle-table tr {
+    border-bottom: 1px solid #0d0303;
+  }
+
+  .vehicle-table td {
+    border-right: 1px solid #0d0303;
+  }
+  
+  .vehicle-table th:not(:last-child),
+  .vehicle-table td:not(:last-child) {
+    width: min-content;
+    padding: 0.5rem;
+  }
+
+  .vehicle-table-override-td {
+    width: 110px;
+    padding: 0.5rem;
+  }
+  
+  .vehicle-table th:last-child,
+  .vehicle-table td:last-child {
+    width: 100%;
+    padding: 0.5rem;
+  }
