@@ -1,0 +1,35 @@
+/* VehicleImageFetchingList.css */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));  /* Auto-fit images with minimum size of 100px */
+    gap: 10px;  /* Add space between images */
+    width: 100%;
+    justify-items: center; /* Center images within their grid cells */
+  }
+  
+  .image-item {
+    width: 100px; /* Fixed size for each image item */
+    height: 100px; /* Fixed size for each image item */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    position: relative;
+  }
+  
+  .vehicle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure image scales proportionally within the fixed size */
+  }
+  
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    font-size: 12px;
+  }
+  
