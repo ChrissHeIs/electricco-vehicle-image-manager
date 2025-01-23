@@ -1,8 +1,9 @@
-  .vehicle-table {
+.vehicle-table {
     width: 100%;
+    border-collapse: collapse;
   }
-
-  .vehicle-table tr:not(:last-child) {
+  
+  .vehicle-table tr {
     border-bottom: 1px solid #0d0303;
   }
   
