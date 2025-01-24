@@ -29,7 +29,10 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
     if (file) {
       setLoading(true);
       Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
         complete: (result) => {
+          console.log(result);
           handleCsvLoaded(result);
         },
         error: (error) => {
@@ -50,6 +53,7 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
       const response = await fetch(url);
       const text = await response.text();
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      console.log(parsed);
 
       handleCsvLoaded(parsed);
     } catch (error) {
@@ -61,9 +65,11 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
 
   return (
     <div>
-      <button onClick={handleURLDownloadAndParse}>Download and Parse from URL</button>
-      <p>OR</p>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <button onClick={handleURLDownloadAndParse}>Download and Parse CSV from server</button>
+        <p>OR</p>
+  <     input type="file" accept=".csv" onChange={handleFileUpload} />
+      </div>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
     </div>
