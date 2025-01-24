@@ -48,8 +48,8 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
     setError(null);
 
     try {
-      const encodedURL = encodeURIComponent(process.env.REACT_APP_CSV_URL);
-      const url = `${process.env.REACT_APP_PROXY_URL}?url=${encodedURL}`;
+      const proxyForCSV = "https://corsproxy.io/";
+      const url = `${proxyForCSV}${process.env.REACT_APP_CSV_URL}`;
       const response = await fetch(url);
       const text = await response.text();
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
