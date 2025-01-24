@@ -21,7 +21,7 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle 
       return;
     }
 
-    const url = `/api/images?key=${apiKey}&angle=side&make=${vehicle.brand}&model=${vehicle.model}&transparent=true&color=black&format=json`;
+    const url = `https://api.carsxe.com/api/images?key=${apiKey}&angle=side&make=${vehicle.brand}&model=${vehicle.model}&transparent=true&color=black&format=json`;
 
     try {
       const res = await fetch(url);
