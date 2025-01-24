@@ -66,7 +66,7 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <button onClick={handleURLDownloadAndParse}>Download and Parse CSV from server</button>
+        <button onClick={handleURLDownloadAndParse}>Download and Parse CSV from Enode</button>
         <p>OR</p>
   <     input type="file" accept=".csv" onChange={handleFileUpload} />
       </div>
