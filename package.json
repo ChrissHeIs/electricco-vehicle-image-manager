@@ -13,8 +13,10 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "CI=false react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -41,5 +43,6 @@
     "@types/papaparse": "^5.3.15",
     "gh-pages": "^6.3.0"
   },
-  "proxy": "https://developers.enode.com"
+  "proxy": "https://developers.enode.com",
+  "homepage": "https://ChrissHeIs.github.io/vehicle-image-manager"
 }
