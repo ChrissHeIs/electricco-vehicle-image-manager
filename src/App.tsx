@@ -24,7 +24,10 @@ const App: React.FC = () => {
       {/* CSV Upload or URL Parsing */}
       <CsvUploader setUpdatedVehicles={handleCsvLoaded} />
 
-      <button onClick={showThirdPartyImages} disabled={updatedVehicles.length == 0}>Load 3rd-party images</button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <button onClick={showThirdPartyImages} disabled={updatedVehicles.length == 0}>Load 3rd-party images</button>
+        <button disabled={true}>Load images from server</button>
+      </div>
 
       {/* Show the list of vehicles in a table and fetch images */}
       <VehicleTable vehicles={updatedVehicles.slice(0, 3) /* Limit to first 3 vehicles for debuggings*/} shouldShowThirdPartyImages={isShowingThirdPartyImages}/>
