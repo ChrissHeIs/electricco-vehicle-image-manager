@@ -47,7 +47,7 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
     try {
       const encodedURL = encodeURIComponent(process.env.REACT_APP_CSV_URL);
       const url = `${process.env.REACT_APP_PROXY_URL}?url=${encodedURL}`;
-      const response = await fetch(process.env.REACT_APP_PROXY_URL + process.env.REACT_APP_CSV_URL);
+      const response = await fetch(url);
       const text = await response.text();
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
 
