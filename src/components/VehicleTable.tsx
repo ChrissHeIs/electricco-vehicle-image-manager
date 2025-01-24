@@ -7,9 +7,10 @@ import OverrideImage from './OverrideImage';
 
 interface VehicleTableProps {
   vehicles: Vehicle[];
+  shouldShowThirdPartyImages: boolean;
 }
 
-const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {  
+const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPartyImages }) => {  
   const handleImageChange = (newImage: string | null) => {
     // setImage(newImage); // Update image in parent state
   };
@@ -34,8 +35,12 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
             <td style={{ width:'110px'}}>
               <OverrideImage image={null} onChange={handleImageChange} />
             </td>              
-            <td>               
+            <td> 
+              {shouldShowThirdPartyImages ? (              
               <VehicleImageFetchingList vehicle={vehicle}/>             
+              ) : (
+                null
+              )}
             </td>          
           </tr>         
         ))}       
