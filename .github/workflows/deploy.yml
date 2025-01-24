@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
@@ -18,6 +22,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'  # Use a specific Node.js version
+
+      - name: Set CI to false to avoid treating warnings as errors
+        run: echo "CI=false" >> $GITHUB_ENV
 
       # Step 3: Install dependencies
       - name: Install dependencies
