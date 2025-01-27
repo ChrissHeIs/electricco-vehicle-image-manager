@@ -31,6 +31,14 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
     setImageURLsToUse(newMap);
   }
 
+  const serverImageURL = (vehicle: Vehicle): string => {
+    const serverBaseURL = process.env.REACT_APP_BACKEND_BASE_URL
+    console.log(serverBaseURL)
+    const encodedBrand = encodeURIComponent(vehicle.brand)
+    const encodedModel = encodeURIComponent(vehicle.model)
+    return `${serverBaseURL}/vehicles/vehicle-image?brand=${encodedBrand}&model=${encodedModel}`
+  }
+
   const handleContinue = () => {
     const vehicleUrls: [Vehicle, string][] = [];
     vehicles.forEach((vehicle, index) => {
@@ -49,7 +57,8 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
           <tr>           
             <th>Brand</th>           
             <th>Model</th>           
-            <th>Year</th>   
+            <th>Year</th>
+            <th>Current server image</th>   
             <th>Custom</th>          
             <th>Images</th>    
           </tr>       
@@ -60,6 +69,9 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
               <td>{vehicle.brand}</td>             
               <td>{vehicle.model}</td>             
               <td>{vehicle.year}</td> 
+              <td>
+                <img src={serverImageURL(vehicle)} width="110" />
+              </td>
               <td style={{ width:'110px'}}>
                 <OverrideImage image={null} onChange={(url: string | null) => handleImageChange(url, index)} />
               </td>              
