@@ -17,6 +17,10 @@ const App: React.FC = () => {
     setIsShowingThirdPartyImages(true);
   }
 
+  const processNewVehicleImages = (vehicleImages: [Vehicle, string][]) => {
+    console.log(vehicleImages);
+  }
+
   return (
     <div>
       <h1>Vehicle Image Manager</h1>
@@ -30,7 +34,11 @@ const App: React.FC = () => {
       </div>
 
       {/* Show the list of vehicles in a table and fetch images */}
-      <VehicleTable vehicles={updatedVehicles.slice(0, 3) /* Limit to first 3 vehicles for debuggings*/} shouldShowThirdPartyImages={isShowingThirdPartyImages}/>
+      <VehicleTable 
+        vehicles={updatedVehicles.slice(0, 3) /* Limit to first 3 vehicles for debuggings*/} 
+        shouldShowThirdPartyImages={isShowingThirdPartyImages}
+        continueWithVehicleURLS={processNewVehicleImages}
+      />
     </div>
   );
 };

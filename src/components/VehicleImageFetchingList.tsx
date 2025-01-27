@@ -5,9 +5,10 @@ import './VehicleImageFetchingList.css';
 
 interface VehicleImageFetcherProps {
   vehicle: Vehicle;
+  setSelectedURL: (vehicleURL: string) => void;
 }
 
-const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle }) => {
+const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle, setSelectedURL }) => {
   const [imageUrls, setImageUrls] = useState<string[] | undefined>();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); // Track selected image
   const [overlayImageUrl, setOverlayImageUrl] = useState<string | null>(null); // Image URL for overlay
@@ -53,8 +54,9 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle 
 
   // Handle image cell click
   const handleImageClick = (index: number) => {
-    if (successfulImageIndeces.has(index)) {
+    if (successfulImageIndeces.has(index) &&  Array.isArray(imageUrls))  {
       setSelectedImageIndex(index); // Set the clicked image as selected
+      setSelectedURL(imageUrls[index]);
     };
   };
 
