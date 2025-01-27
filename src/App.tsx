@@ -48,7 +48,7 @@ const App: React.FC = () => {
         </div>
       ) : (
         <div>
-          <button onClick={() => setImagesToProcess(null)}>Back</button>
+          <button onClick={() => setImagesToProcess(null)}>Cancel</button>
           <VehicleImageProcessor vehicleURLs={imagesToProcess} />
         </div>
       )}

@@ -69,7 +69,8 @@ const VehicleImageProcessor: React.FC<VehicleImageProcessorProps> = ({ vehicleUR
         const [vehicle, url] = vehicleURLs[i];
         
         // Create folder structure
-        const brandFolder = vehicleImages.folder(vehicle.brand);  // Create brand subfolder
+        const sanitizedBrand = sanitizeStringForFilename(vehicle.brand)
+        const brandFolder = vehicleImages.folder(sanitizedBrand);  // Create brand subfolder
         if (!brandFolder) throw new Error('Could not create brand folder');
         
         // Download and process image
@@ -77,7 +78,8 @@ const VehicleImageProcessor: React.FC<VehicleImageProcessorProps> = ({ vehicleUR
         const scaledBlob = await scaleImage(img);
         
         // Add to zip with model name
-        brandFolder.file(`${vehicle.model}.png`, scaledBlob)
+        const sanitizedModel = sanitizeStringForFilename(vehicle.model)
+        brandFolder.file(`${sanitizedModel}.png`, scaledBlob)
         
         // Update progress
         setProgress(Math.round(((i + 1) / vehicleURLs.length) * 100));
@@ -128,3 +130,17 @@ const VehicleImageProcessor: React.FC<VehicleImageProcessorProps> = ({ vehicleUR
 };
 
 export default VehicleImageProcessor;
+
+export function sanitizeStringForFilename(stringToSanitize: string): string {
+	// WARNING: If yu change this ensure that it is also changed in Vehicle-image-manager project
+	// Remove or replace invalid characters
+	return stringToSanitize
+	  // Replace spaces with underscores
+	  .replace(/\s+/g, '_')
+	  // Remove non-alphanumeric characters except underscores and hyphens
+	  .replace(/[^a-zA-Z0-9_-]/g, '')
+	  // Convert to lowercase for consistency
+	  .toLowerCase()
+	  // Trim leading/trailing periods and spaces
+	  .replace(/^[.\s]+|[.\s]+$/g, '')
+}
