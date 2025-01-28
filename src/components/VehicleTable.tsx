@@ -14,6 +14,7 @@ interface VehicleTableProps {
 
 const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPartyImages, continueWithVehicleURLS }) => {  
   const [imageURLsToUse, setImageURLsToUse] = useState<Map<number, string>>(new Map());
+  const [singleRowsToLoad, setSingleRowsToLoad] = useState<Set<number>>(new Set())
 
   const handleImageChange = (newImage: string | null, vehicleIndex: number) => {
     const newMap = new Map(imageURLsToUse); // Clone the existing map to avoid direct mutation
@@ -56,6 +57,13 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
      e.preventDefault();
      e.currentTarget.src = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20221125%2Fourmid%2Fpngtree-no-image-available-icon-flatvector-illustration-thumbnail-graphic-illustration-vector-png-image_40966590.jpg&f=1&nofb=1&ipt=28abe953bd8ce93c15c0e20cd9cc187634b4c367c0e674386ff9da85aa22ed19&ipo=images"
   };
+
+  const handleLoadSingleRow = (index: number) => {
+    const set = new Set(singleRowsToLoad);
+    set.add(index)
+    setSingleRowsToLoad(set)
+    console.log(singleRowsToLoad)
+  }
   
   return ( 
     <div>
@@ -83,10 +91,10 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
                 <OverrideImage image={null} onChange={(url: string | null) => handleImageChange(url, index)} />
               </td>              
               <td> 
-                {shouldShowThirdPartyImages ? (              
-                <VehicleImageFetchingList vehicle={vehicle} setSelectedURL={(url: string) => handleURLSelected(url, index)}/>             
+                {(shouldShowThirdPartyImages || singleRowsToLoad.has(index)) ? (              
+                  <VehicleImageFetchingList vehicle={vehicle} setSelectedURL={(url: string) => handleURLSelected(url, index)}/>             
                 ) : (
-                  null
+                  <button onClick={() => handleLoadSingleRow(index)}>Load only this row</button>
                 )}
               </td>          
             </tr>         
