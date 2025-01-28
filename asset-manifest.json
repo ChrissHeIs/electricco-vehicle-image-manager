@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/vehicle-image-manager/static/css/main.377bf53a.css",
-    "main.js": "/vehicle-image-manager/static/js/main.9ae1ce02.js",
+    "main.css": "/vehicle-image-manager/static/css/main.35686ff9.css",
+    "main.js": "/vehicle-image-manager/static/js/main.c5316b5e.js",
     "index.html": "/vehicle-image-manager/index.html",
-    "main.377bf53a.css.map": "/vehicle-image-manager/static/css/main.377bf53a.css.map",
-    "main.9ae1ce02.js.map": "/vehicle-image-manager/static/js/main.9ae1ce02.js.map"
+    "main.35686ff9.css.map": "/vehicle-image-manager/static/css/main.35686ff9.css.map",
+    "main.c5316b5e.js.map": "/vehicle-image-manager/static/js/main.c5316b5e.js.map"
   },
   "entrypoints": [
-    "static/css/main.377bf53a.css",
-    "static/js/main.9ae1ce02.js"
+    "static/css/main.35686ff9.css",
+    "static/js/main.c5316b5e.js"
   ]
 }
