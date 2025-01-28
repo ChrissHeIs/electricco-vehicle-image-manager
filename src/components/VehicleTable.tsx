@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { Vehicle } from '../model/Vehicle';
 import VehicleImageFetchingList from './VehicleImageFetchingList';
 import './VehicleTable.css'
+import './VehicleImageFetchingList.css';
 import OverrideImage from './OverrideImage';
 import LazyImage from './LazyImage';
+import ZoomOverlayImage from './ZoomOverlayImage';
 
 interface VehicleTableProps {
   vehicles: Vehicle[];
@@ -15,6 +17,7 @@ interface VehicleTableProps {
 const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPartyImages, continueWithVehicleURLS }) => {  
   const [imageURLsToUse, setImageURLsToUse] = useState<Map<number, string>>(new Map());
   const [singleRowsToLoad, setSingleRowsToLoad] = useState<Set<number>>(new Set())
+  const [overlayImageUrl, setOverlayImageUrl] = useState<string | null>(null);
 
   const handleImageChange = (newImage: string | null, vehicleIndex: number) => {
     const newMap = new Map(imageURLsToUse); // Clone the existing map to avoid direct mutation
@@ -64,6 +67,14 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
     setSingleRowsToLoad(set)
     console.log(singleRowsToLoad)
   }
+
+  const handleImageZoom = (url: string) => {
+    setOverlayImageUrl(url);
+  };
+
+  const closeOverlay = () => {
+    setOverlayImageUrl(null);
+  };
   
   return ( 
     <div>
@@ -85,7 +96,15 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
               <td>{vehicle.model}</td>             
               <td>{vehicle.year}</td> 
               <td>
-                <LazyImage src={serverImageURL(vehicle)} width="110" onError={handleError}/>
+                <div className='image-item'>
+                  <LazyImage src={serverImageURL(vehicle)} width="110" onError={handleError}/>
+                  <div className='zoom-icon-container' onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageZoom(serverImageURL(vehicle));
+                  }}>
+                    <img src='https://cdn-icons-png.flaticon.com/128/71/71403.png' width="20" height="20" />
+                  </div>
+                </div>
               </td>
               <td style={{ width:'110px'}}>
                 <OverrideImage image={null} onChange={(url: string | null) => handleImageChange(url, index)} />
@@ -102,6 +121,9 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
         </tbody>     
       </table>  
       <button className='pinned-button' onClick={handleContinue} disabled={imageURLsToUse.size == 0}>Continue</button>
+      {overlayImageUrl && (
+        <ZoomOverlayImage imageURL={overlayImageUrl} onClose={closeOverlay} />
+      )}
     </div> 
   ); 
 };
