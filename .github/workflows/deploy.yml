@@ -37,6 +37,7 @@ jobs:
           REACT_APP_PROXY_URL: ${{ secrets.REACT_APP_PROXY_URL }}  # Use GitHub Secret for proxy URL
           REACT_APP_CSV_URL: ${{ secrets.REACT_APP_CSV_URL }}      # Use GitHub Secret for CSV URL
           REACT_APP_CARSXE_KEY: ${{ secrets.REACT_APP_CARSXE_KEY }}  # Use GitHub Secret for CarsXE API key
+          REACT_APP_BACKEND_BASE_URL: ${{ secrets.REACT_APP_BACKEND_BASE_URL }}
 
       # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
