@@ -41,7 +41,7 @@ const App: React.FC = () => {
             <button disabled={true}>Load images from server</button>
           </div>
           <VehicleTable 
-            vehicles={updatedVehicles.slice(0, 3) /* Limit to first 3 vehicles for debuggings*/} 
+            vehicles={updatedVehicles/*.slice(0, 3) Limit to first 3 vehicles for debuggings*/} 
             shouldShowThirdPartyImages={isShowingThirdPartyImages}
             continueWithVehicleURLS={processNewVehicleImages}
           />
