@@ -138,8 +138,8 @@ export function sanitizeStringForFilename(stringToSanitize: string): string {
 	return stringToSanitize
 	  // Replace spaces with underscores
 	  .replace(/\s+/g, '_')
-	  // Remove non-alphanumeric characters except underscores and hyphens
-	  .replace(/[^a-zA-Z0-9_-]/g, '')
+	  // Replace non-alphanumeric characters except underscores and hyphens with hyphen
+	  .replace(/[^a-zA-Z0-9_-]/g, '-')
 	  // Convert to lowercase for consistency
 	  .toLowerCase()
 	  // Trim leading/trailing periods and spaces
