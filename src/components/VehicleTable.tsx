@@ -86,7 +86,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
           ))}       
         </tbody>     
       </table>  
-      <button onClick={handleContinue} disabled={imageURLsToUse.size == 0}>Continue</button>
+      <button className='pinned-button' onClick={handleContinue} disabled={imageURLsToUse.size == 0}>Continue</button>
     </div> 
   ); 
 };
