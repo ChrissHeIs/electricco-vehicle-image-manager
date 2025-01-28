@@ -1,7 +1,6 @@
-// src/components/VehicleImageFetcher.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Vehicle } from '../model/Vehicle';
-import './VehicleImageFetchingList.css'; 
+import './VehicleImageFetchingList.css';
 
 interface VehicleImageFetcherProps {
   vehicle: Vehicle;
@@ -10,9 +9,11 @@ interface VehicleImageFetcherProps {
 
 const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle, setSelectedURL }) => {
   const [imageUrls, setImageUrls] = useState<string[] | undefined>();
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); // Track selected image
-  const [overlayImageUrl, setOverlayImageUrl] = useState<string | null>(null); // Image URL for overlay
-  const [successfulImageIndeces, setSuccessfulImageIndeces] = useState<Set<number>>(new Set())
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [overlayImageUrl, setOverlayImageUrl] = useState<string | null>(null);
+  const [successfulImageIndeces, setSuccessfulImageIndeces] = useState<Set<number>>(new Set());
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const fetchImagesForVehicle = async (vehicle: Vehicle) => {
     const apiKey = process.env.REACT_APP_CARSXE_KEY;
@@ -41,7 +42,7 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
         console.log("Response JSON:", data);
 
         if (data.images && Array.isArray(data.images)) {
-            setImageUrls(data.images.map((img: any) => img.link));
+          setImageUrls(data.images.map((img: any) => img.link));
         }
       } else {
         const text = await res.text();
@@ -52,12 +53,11 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
     }
   };
 
-  // Handle image cell click
   const handleImageClick = (index: number) => {
-    if (successfulImageIndeces.has(index) &&  Array.isArray(imageUrls))  {
-      setSelectedImageIndex(index); // Set the clicked image as selected
+    if (successfulImageIndeces.has(index) && Array.isArray(imageUrls)) {
+      setSelectedImageIndex(index);
       setSelectedURL(imageUrls[index]);
-    };
+    }
   };
 
   const markSuccessfulImageLoad = (index: number) => {
@@ -66,55 +66,83 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
     setSuccessfulImageIndeces(indices);
   };
 
-  // Show the overlay with the larger image
   const handleImageZoom = (url: string) => {
-    setOverlayImageUrl(url); // Set the URL for the larger image in the overlay
+    setOverlayImageUrl(url);
   };
 
-  // Hide the overlay
   const closeOverlay = () => {
-    setOverlayImageUrl(null); // Just clear the URL to close the overlay
+    setOverlayImageUrl(null);
   };
 
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    // Silencing the error message
+    e.preventDefault();
+    // Optionally, set a fallback image if you want
+    // e.target.src = fallbackSrc || '/path/to/your/default-image.png';
+  };
+
+  // Add intersection observer
   useEffect(() => {
-    fetchImagesForVehicle(vehicle);
-  }, [vehicle]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '200px',
+        threshold: 0
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Only fetch images when component is in view
+  useEffect(() => {
+    if (isInView) {
+      fetchImagesForVehicle(vehicle);
+    }
+  }, [vehicle, isInView]);
 
   return (
-    <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-      {imageUrls ? (
+    <div ref={containerRef} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      {isInView && imageUrls ? (
         <div className="image-grid">
           {imageUrls.map((url, i) => (
-            <div key={i} className={`image-item ${selectedImageIndex === i ? 'image-item-selected' : ''}` } onClick={() => handleImageClick(i)}>
+            <div key={i} className={`image-item ${selectedImageIndex === i ? 'image-item-selected' : ''}`} onClick={() => handleImageClick(i)}>
               {url ? (
                 <div className='image-container'>
                   <img
                     src={url}
                     alt={`${vehicle.brand} ${vehicle.model}`}
                     className="vehicle-image"
+                    onError={handleError}
                     onLoad={() => markSuccessfulImageLoad(i)}
                   />
                 </div>
               ) : (
                 <div className="image-placeholder">Error</div>
               )}
-              { successfulImageIndeces.has(i) ? (
+              {successfulImageIndeces.has(i) ? (
                 <div className='zoom-icon-container' onClick={(e) => {
-                  e.stopPropagation(); // Prevent triggering the row click
-                  handleImageZoom(url); // Open the larger image in the overlay
+                  e.stopPropagation();
+                  handleImageZoom(url);
                 }}>
-                  <img src='https://cdn-icons-png.flaticon.com/128/71/71403.png' width="20" height="20"/>
+                  <img src='https://cdn-icons-png.flaticon.com/128/71/71403.png' width="20" height="20" />
                 </div>
-              ) : ( 
-                null 
-              )}
+              ) : null}
             </div>
           ))}
         </div>
       ) : (
         <div className="image-placeholder">Loading...</div>
       )}
-      {/* Image Overlay */}
       {overlayImageUrl && (
         <div
           style={{
@@ -129,7 +157,7 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
             alignItems: 'center',
             zIndex: 9999,
           }}
-          onClick={closeOverlay} // Close overlay when clicking outside the image
+          onClick={closeOverlay}
         >
           <div
             style={{
@@ -177,4 +205,3 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
 };
 
 export default VehicleImageFetchingList;
-
