@@ -39,7 +39,6 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
 
       if (contentType && contentType.includes("application/json")) {
         const data = await res.json();
-        console.log("Response JSON:", data);
 
         if (data.images && Array.isArray(data.images)) {
           setImageUrls(data.images.map((img: any) => img.link));
@@ -61,7 +60,7 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
   };
 
   const markSuccessfulImageLoad = (index: number) => {
-    const indices = successfulImageIndeces;
+    const indices = new Set(successfulImageIndeces);
     indices.add(index);
     setSuccessfulImageIndeces(indices);
   };
@@ -77,8 +76,6 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     // Silencing the error message
     e.preventDefault();
-    // Optionally, set a fallback image if you want
-    // e.target.src = fallbackSrc || '/path/to/your/default-image.png';
   };
 
   // Add intersection observer
