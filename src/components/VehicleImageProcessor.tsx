@@ -17,7 +17,8 @@ const VehicleImageProcessor: React.FC<VehicleImageProcessorProps> = ({ vehicleUR
     console.log(url);
     const encodedURL = encodeURIComponent(url);
     const proxyUrl = process.env.REACT_APP_PROXY_URL;
-    const proxiedUrl = `https://corsproxy.io/${encodedURL}`;
+    console.log(proxyUrl);
+    const proxiedUrl = `${proxyUrl}/api/download/${encodedURL}`;
     console.log(proxiedUrl);
     const response = await fetch(proxiedUrl);
     if (!response.ok) {

@@ -24,7 +24,7 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
     }
 
     const apiUrl = encodeURIComponent(`https://api.carsxe.com/images?key=${apiKey}&angle=side&make=${vehicle.brand}&model=${vehicle.model}&transparent=true&color=black&format=json`);
-    const url = `${proxyUrl}?url=${apiUrl}`;
+    const url = `${proxyUrl}/api/proxy?url=${apiUrl}`;
     try {
       const res = await fetch(url);
 
