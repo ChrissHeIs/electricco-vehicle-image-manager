@@ -32,7 +32,6 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
         header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          console.log(result);
           handleCsvLoaded(result);
         },
         error: (error) => {
@@ -54,7 +53,6 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({ setUpdatedVehicles }) => {
       const response = await fetch(url);
       const text = await response.text();
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-      console.log(parsed);
 
       handleCsvLoaded(parsed);
     } catch (error) {

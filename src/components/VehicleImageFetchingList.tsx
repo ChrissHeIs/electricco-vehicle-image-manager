@@ -139,7 +139,9 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
           ))}
         </div>
       ) : (
-        <div className="image-placeholder">Loading...</div>
+        <div className="image-placeholder">Loading...
+          <button onClick={() => fetchImagesForVehicle(vehicle)}>Reload</button>
+        </div>
       )}
       {overlayImageUrl && (
         <ZoomOverlayImage imageURL={overlayImageUrl} onClose={closeOverlay} />
