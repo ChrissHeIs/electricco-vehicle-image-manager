@@ -35,7 +35,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, ...props }) => {
       ref={imgRef}
       {...props}
       src={isVisible ? src : undefined} // Set the image source only when visible
-      alt={props.alt || 'Lazy loaded image'} // Ensure alt text is passed
+      alt={props.alt || 'No image'} // Ensure alt text is passed
     />
   );
 };

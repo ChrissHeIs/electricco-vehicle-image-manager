@@ -59,18 +59,7 @@ const OverrideImage: React.FC<OverrideImageProps> = ({ image, onChange }) => {
       {/* If no image, show buttons */}
       {!currentImage ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <button onClick={() => document.getElementById('uploadInput')?.click()}>
-            Upload
-          </button>
-          <span style={{ textAlign: 'center' }}>OR</span>
           <button onClick={handlePasteUrl}>Paste URL</button>
-          <input
-            type="file"
-            id="uploadInput"
-            style={{ display: 'none' }}
-            accept="image/*"
-            onChange={handleUploadImage}
-          />
         </div>
       ) : (
         <div style={{ position: 'relative' }}>
