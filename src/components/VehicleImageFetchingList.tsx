@@ -61,9 +61,11 @@ const VehicleImageFetchingList: React.FC<VehicleImageFetcherProps> = ({ vehicle,
   };
 
   const markSuccessfulImageLoad = (index: number) => {
-    const indices = new Set(successfulImageIndeces);
-    indices.add(index);
-    setSuccessfulImageIndeces(indices);
+    setSuccessfulImageIndeces((prevIndices) => {
+      const newIndices = new Set(prevIndices);
+      newIndices.add(index);
+      return newIndices;
+    });
   };
 
   const handleImageZoom = (url: string) => {
