@@ -74,8 +74,8 @@ const App: React.FC = () => {
         <CsvUploader setUpdatedVehicles={handleCsvLoaded} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button onClick={showThirdPartyImages} disabled={updatedVehicles.length == 0}>Load 3rd-party images</button>
           <ImagesFileUploader isDisabled={updatedVehicles.length == 0} onGetVehicleImages={handleVehicleImagesFromJSONFile} />
+          <button onClick={showThirdPartyImages} disabled={updatedVehicles.length == 0}>Load all 3rd-party images</button>
         </div>
         <VehicleTable 
           vehicles={updatedVehicles/*.slice(0, 3) Limit to first 3 vehicles for debuggings*/} 

@@ -64,7 +64,7 @@ const ImagesFileUploader: React.FC<ImagesFileUploaderProps> = ({isDisabled, onGe
                 onClick={() => document.getElementById('vehicleImageFile')?.click()}
                 disabled={isDisabled}
             >
-                Load Vehicle Images
+                Load Vehicle Images from JSON
             </button>
             {error && (
                 <p>{error}</p>

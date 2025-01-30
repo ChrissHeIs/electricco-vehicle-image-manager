@@ -138,7 +138,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, serverImages, sho
           ))}       
         </tbody>     
       </table>  
-      <button className='pinned-button' onClick={handleContinue} disabled={imageURLsToUse.size == 0}>Continue</button>
+      <button className='pinned-button' onClick={handleContinue} disabled={imageURLsToUse.size == 0}>Download file</button>
       {overlayImageUrl && (
         <ZoomOverlayImage imageURL={overlayImageUrl} onClose={closeOverlay} />
       )}
