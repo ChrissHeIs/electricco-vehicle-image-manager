@@ -1,5 +1,5 @@
 // src/components/VehicleTable.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Vehicle } from '../model/Vehicle';
 import VehicleImageFetchingList from './VehicleImageFetchingList';
 import './VehicleTable.css'
@@ -10,11 +10,13 @@ import ZoomOverlayImage from './ZoomOverlayImage';
 
 interface VehicleTableProps {
   vehicles: Vehicle[];
+  serverImages: [Vehicle, string][]
   shouldShowThirdPartyImages: boolean;
   continueWithVehicleURLS: (vehicleUrls: [Vehicle, string][]) => void;
 }
 
-const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPartyImages, continueWithVehicleURLS }) => {  
+const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, serverImages, shouldShowThirdPartyImages, continueWithVehicleURLS }) => {  
+  const [serverImagesMap, setServerImagesMap] = useState<Record<string, string>>({});
   const [imageURLsToUse, setImageURLsToUse] = useState<Map<number, string>>(new Map());
   const [singleRowsToLoad, setSingleRowsToLoad] = useState<Set<number>>(new Set())
   const [overlayImageUrl, setOverlayImageUrl] = useState<string | null>(null);
@@ -29,6 +31,22 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
     }
     setImageURLsToUse(newMap);
   };
+
+  useEffect(() => {
+    // Transform serverImages into a Record whenever it changes
+    const newImageMap = serverImages.reduce((acc, [vehicle, imageUrl]) => {
+        // Create a unique key for each vehicle
+        const key = mapKeyForVehicle(vehicle);
+        acc[key] = imageUrl;
+        return acc;
+    }, {} as Record<string, string>);
+
+    setServerImagesMap(newImageMap);
+  } , [serverImages]); // Only re-run when serverImages changes
+
+  const mapKeyForVehicle = (vehicle: Vehicle): string => {
+    return `${vehicle.brand}|${vehicle.model}`
+  }
 
   const handleURLSelected = (url: string, vehicleIndex: number) => {
     const newMap = new Map(imageURLsToUse);  
@@ -97,7 +115,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, shouldShowThirdPa
               <td>{vehicle.year}</td> 
               <td>
                 <div className='image-item'>
-                  <LazyImage src={serverImageURL(vehicle)} width="110" onError={handleError}/>
+                  <LazyImage src={serverImagesMap[mapKeyForVehicle(vehicle)]} width="110" onError={handleError}/>
                   <div className='zoom-icon-container' onClick={(e) => {
                     e.stopPropagation();
                     handleImageZoom(serverImageURL(vehicle));

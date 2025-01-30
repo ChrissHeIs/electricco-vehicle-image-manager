@@ -4,8 +4,10 @@ import VehicleImageFetchingList from "./components/VehicleImageFetchingList"; //
 import { Vehicle } from "./model/Vehicle"; // Assuming Vehicle type is defined somewhere
 import VehicleTable from "./components/VehicleTable";
 import { exportVehicleData } from "./utils/VehicleJSONGenerator";
+import ImagesFileUploader from "./components/ImagesFileUploader";
 
 const App: React.FC = () => {
+  const [vehicleImagesFromServer, setVehicleImagesFromServer] = useState<[Vehicle, string][]>([])
   const [updatedVehicles, setUpdatedVehicles] = useState<Vehicle[]>([]);
   const [isShowingThirdPartyImages, setIsShowingThirdPartyImages] = useState<boolean>(false);
 
@@ -23,6 +25,10 @@ const App: React.FC = () => {
     exportVehicleData(vehicleImages)
   }
 
+  const handleVehicleImagesFromJSONFile = (vehicleImages: [Vehicle, string][]) => {
+    setVehicleImagesFromServer(vehicleImages)
+  }
+
   return (
     <div>
       <h1>Vehicle Image Manager</h1>
@@ -35,9 +41,11 @@ const App: React.FC = () => {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button onClick={showThirdPartyImages} disabled={updatedVehicles.length == 0}>Load 3rd-party images</button>
+          <ImagesFileUploader isDisabled={updatedVehicles.length == 0} onGetVehicleImages={handleVehicleImagesFromJSONFile} />
         </div>
         <VehicleTable 
           vehicles={updatedVehicles/*.slice(0, 3) Limit to first 3 vehicles for debuggings*/} 
+          serverImages={vehicleImagesFromServer}
           shouldShowThirdPartyImages={isShowingThirdPartyImages}
           continueWithVehicleURLS={processNewVehicleImages}
         />
