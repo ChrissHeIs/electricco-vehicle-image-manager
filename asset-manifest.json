@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/vehicle-image-manager/static/css/main.35686ff9.css",
-    "main.js": "/vehicle-image-manager/static/js/main.a44a54b5.js",
-    "index.html": "/vehicle-image-manager/index.html",
-    "main.35686ff9.css.map": "/vehicle-image-manager/static/css/main.35686ff9.css.map",
-    "main.a44a54b5.js.map": "/vehicle-image-manager/static/js/main.a44a54b5.js.map"
+    "main.css": "/electricco-vehicle-image-manager/static/css/main.35686ff9.css",
+    "main.js": "/electricco-vehicle-image-manager/static/js/main.a44a54b5.js",
+    "index.html": "/electricco-vehicle-image-manager/index.html",
+    "main.35686ff9.css.map": "/electricco-vehicle-image-manager/static/css/main.35686ff9.css.map",
+    "main.a44a54b5.js.map": "/electricco-vehicle-image-manager/static/js/main.a44a54b5.js.map"
   },
   "entrypoints": [
     "static/css/main.35686ff9.css",
